@@ -5,6 +5,8 @@ __author__ = "Maylon"
 
 
 import sys
+import jieba
+import re
 
 
 def read_file(file_path):
@@ -25,6 +27,20 @@ def read_file(file_path):
     return string
 
 
+def filter_words(string):
+    """
+    将给定字符串进行分词，以列表形式返回结果
+    :param string: 目标字符串
+    :return: 列表
+    """
+    words = jieba.cut(string)       # 使用jieba库进行分词
+    result = []
+    for word in words:
+        if re.match(r'[a-zA-Z0-9\u4e00-\u9fa5]', word):     # 正则表达式匹配中英文和数字
+            result.append(word)
+    return result
+
+
 if __name__ == '__main__':
     try:
         original_path, check_path, answer_path = sys.argv[1: 4]
@@ -34,4 +50,6 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     file_str = read_file(original_path)
-    print(file_str)
+    # print(file_str)
+    filter_result = filter_words(file_str)
+    print(filter_result)
