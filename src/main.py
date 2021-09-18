@@ -7,6 +7,7 @@ __author__ = "Maylon"
 import sys
 import jieba
 import re
+import gensim
 
 
 def read_file(file_path):
@@ -41,15 +42,32 @@ def filter_words(string):
     return result
 
 
+def calc_similarity(text1, text2):
+    """
+    计算余弦相似度
+    :param text1: 文本1
+    :param text2: 文本2
+    :return: 相似度
+    """
+    texts = [text1, text2]
+    # 建立词袋模型向量化文本
+    dictionary = gensim.corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
+    similarity = gensim.similarities.Similarity('-Similarity-index', corpus, num_features=len(dictionary))  # 计算余弦相似度
+    test_corpus = dictionary.doc2bow(text1)     # 将文本转换为bow向量
+    cosine_sim = similarity[test_corpus][1]    # 变量类型为<class 'numpy.float32'>
+    result = round(cosine_sim.item(), 2)   # 转化为<class 'float'>，并取小数点后两位
+    return result
+
+
 if __name__ == '__main__':
     try:
         original_path, check_path, answer_path = sys.argv[1: 4]
-    except Exception as e:
+    except ValueError as e:     # 未传参则会引发ValueError
         print(e)
         print("请使用命令行给出参数")
         sys.exit(-1)
 
-    file_str = read_file(original_path)
-    # print(file_str)
-    filter_result = filter_words(file_str)
-    print(filter_result)
+    text1 = filter_words(read_file(original_path))
+    text2 = filter_words(read_file(check_path))
+    print(calc_similarity(text1, text2))
