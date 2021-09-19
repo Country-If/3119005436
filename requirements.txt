@@ -1,0 +1,9 @@
+certifi==2021.5.30
+Cython==0.29.23
+dataclasses==0.8
+gensim==4.1.2
+jieba==0.42.1
+numpy==1.19.5
+scipy==1.5.4
+smart-open==5.2.1
+wincertstore==0.2
