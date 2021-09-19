@@ -98,7 +98,11 @@ if __name__ == '__main__':
         print(e)
         sys.exit(-1)
 
-    text1 = filter_words(read_file(original_path))
-    text2 = filter_words(read_file(check_path))
-    save_answer(answer_path, calc_similarity(text1, text2))
-    get_answer(answer_path)
+    try:
+        text1 = filter_words(read_file(original_path))
+        text2 = filter_words(read_file(check_path))
+        save_answer(answer_path, calc_similarity(text1, text2))
+        get_answer(answer_path)
+    except Exception as e:
+        print(e)
+        sys.exit(-1)
