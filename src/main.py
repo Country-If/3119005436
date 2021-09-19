@@ -70,15 +70,18 @@ def save_answer(save_path, ans):
     try:
         with open(save_path, 'w') as f:
             f.write("文本相似度为：" + str(ans))       # 将计算结果写入txt中
+        f.close()
     except FileNotFoundError as e:
         print(e)
         sys.exit(-1)
 
 
 def get_answer(ans_path):
+    """读取结果"""
     try:
         with open(ans_path, 'r') as f:
             print(f.readline())     # 读取计算结果并打印
+        f.close()
     except FileNotFoundError as e:
         print(e)
         sys.exit(-1)
