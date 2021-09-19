@@ -75,6 +75,15 @@ def save_answer(save_path, ans):
         sys.exit(-1)
 
 
+def get_answer(ans_path):
+    try:
+        with open(ans_path, 'r') as f:
+            print(f.readline())     # 读取计算结果并打印
+    except FileNotFoundError as e:
+        print(e)
+        sys.exit(-1)
+
+
 if __name__ == '__main__':
     try:
         original_path, check_path, answer_path = sys.argv[1: 4]
@@ -89,3 +98,4 @@ if __name__ == '__main__':
     text1 = filter_words(read_file(original_path))
     text2 = filter_words(read_file(check_path))
     save_answer(answer_path, calc_similarity(text1, text2))
+    get_answer(answer_path)
