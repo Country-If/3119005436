@@ -60,6 +60,21 @@ def calc_similarity(text1, text2):
     return result
 
 
+def save_answer(save_path, ans):
+    """
+    保存计算结果到txt中
+    :param save_path: 保存路径
+    :param ans: 计算结果
+    :return: None
+    """
+    try:
+        with open(save_path, 'w') as f:
+            f.write("文本相似度为：" + str(ans))       # 将计算结果写入txt中
+    except FileNotFoundError as e:
+        print(e)
+        sys.exit(-1)
+
+
 if __name__ == '__main__':
     try:
         original_path, check_path, answer_path = sys.argv[1: 4]
@@ -67,7 +82,10 @@ if __name__ == '__main__':
         print(e)
         print("请使用命令行给出参数")
         sys.exit(-1)
+    except FileNotFoundError as e:      # 文件不存在会引发FileNotFoundError
+        print(e)
+        sys.exit(-1)
 
     text1 = filter_words(read_file(original_path))
     text2 = filter_words(read_file(check_path))
-    print(calc_similarity(text1, text2))
+    save_answer(answer_path, calc_similarity(text1, text2))
